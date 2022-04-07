@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -28,6 +29,7 @@ public class CachedData {
                     //在开始写之前，首先要释放读锁，否则写锁无法拿到
                     readWriteLock.readLock().unlock();
                     readWriteLock.writeLock().lock();
+                    value = cacheData.get(key);
                     if (value == null) {
                         value = "resultData";
                         System.out.println("load data:" + key);
